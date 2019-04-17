@@ -6,26 +6,75 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.xing.lib.CountDownView
-        android:layout_width="wrap_content"
-        android:id="@+id/id_view"
-        app:hx_bg_color="#00ffffff"
-        app:hx_text_change_style="decrease"
-        app:hx_arc_width="3dp"
-        app:hx_arc_color="#e90924"
-        app:hx_text_size="16sp"
-        android:layout_height="wrap_content">
 
-    </com.xing.lib.CountDownView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
 
+        <com.xing.lib.CountDownView
+            android:id="@+id/id_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp" />
+
+        <com.xing.lib.CountDownView
+            android:id="@+id/id_view1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            app:hx_arc_color="#EA80FC"
+            app:hx_arc_width="3dp"
+            app:hx_bg_color="#69F0AE"
+            app:hx_max_time="10"
+            app:hx_text_change_style="decrease"
+            app:hx_text_color="#FFF"
+            app:hx_text_size="14sp" />
+
+        <com.xing.lib.CountDownView
+            android:id="@+id/id_view2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            app:hx_arc_color="#00ACC1"
+            app:hx_arc_width="3dp"
+            app:hx_bg_color="#F4FF81"
+            app:hx_max_time="2"
+            app:hx_start_angle="0"
+            app:hx_text_change_style="increase"
+            app:hx_text_color="#00E676"
+            app:hx_text_size="16sp"
+            app:hx_time_unit="s" />
+
+
+        <com.xing.lib.CountDownView
+            android:id="@+id/id_view4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:layout_marginStart="12dp"
+            app:hx_arc_color="#EEFF41"
+            app:hx_arc_width="3dp"
+            app:hx_bg_color="#22000000"
+            app:hx_bg_radius="40dp"
+            app:hx_start_angle="180"
+            app:hx_text_change_style="decrease"
+            app:hx_text_color="#00E676"
+            app:hx_text_size="16sp" />
+
+
+    </LinearLayout>
 
 
     <Button
         android:layout_width="match_parent"
-        android:text="start"
+        android:layout_height="wrap_content"
         android:onClick="start"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_height="wrap_content" />
+        android:text="start"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
