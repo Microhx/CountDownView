@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.xing.lib.CountDownView
+        android:layout_width="wrap_content"
+        android:id="@+id/id_view"
+        app:hx_bg_color="#00ffffff"
+        app:hx_text_change_style="decrease"
+        app:hx_arc_width="3dp"
+        app:hx_arc_color="#e90924"
+        app:hx_text_size="16sp"
+        android:layout_height="wrap_content">
+
+    </com.xing.lib.CountDownView>
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="start"
+        android:onClick="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content" />
+
+
+</android.support.constraint.ConstraintLayout>

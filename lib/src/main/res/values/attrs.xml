@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CountDownView">
+        <attr name="hx_bg_color" format="color|reference"/>
+        <attr name="hx_arc_color" format="color|reference"/>
+        <attr name="hx_arc_width" format="dimension|reference"/>
+
+        <attr name="hx_text_change_style" format="enum">
+            <enum value="0" name="increase"/>
+            <enum value="1" name="decrease"/>
+        </attr>
+
+        <attr name="hx_text_size" format="dimension|reference"/>
+
+        <attr name="hx_text_color" format="color|reference"/>
+
+        <attr name="hx_max_time" format="integer|reference"/>
+
+        <attr name="hx_time_unit" format="string|reference"/>
+
+        <attr name="hx_start_angle" format="integer|reference"/>
+
+        <attr name="hx_bg_radius" format="dimension|reference"/>
+
+
+
+    </declare-styleable>
+
+
+</resources>
