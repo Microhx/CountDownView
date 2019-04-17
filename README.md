@@ -1,3 +1,3 @@
 # CountDownView
 
-<img src='./image/demo.gif' width="340"/>
+<img src='https://raw.githubusercontent.com/Microhx/CountDownView/master/img/demo.gif' width="340"/>
