@@ -24,10 +24,12 @@ public class MainActivity extends AppCompatActivity implements CountDownView.OnC
         view2 = findViewById(R.id.id_view2);
         view3 = findViewById(R.id.id_view4);
 
+        view2.setJustSkip(true);
         view2.setCountDownListener(this);
     }
 
     public void start(View v){
+
         view.start();
         view1.start();
         view2.start();

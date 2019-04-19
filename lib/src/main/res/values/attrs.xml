@@ -4,6 +4,7 @@
         <attr name="hx_bg_color" format="color|reference"/>
         <attr name="hx_arc_color" format="color|reference"/>
         <attr name="hx_arc_width" format="dimension|reference"/>
+        <attr name="hx_arc_padding" format="dimension|reference"/>
 
         <attr name="hx_text_change_style" format="enum">
             <enum value="0" name="increase"/>
@@ -22,6 +23,13 @@
 
         <attr name="hx_bg_radius" format="dimension|reference"/>
 
+        <attr name="hx_just_skip" format="boolean"/>
+
+        <attr name="hx_skip_text" format="string|reference"/>
+
+        <attr name="hx_skip_text_size" format="dimension|reference"/>
+
+        <attr name="hx_skip_text_color" format="dimension|color"/>
 
 
     </declare-styleable>

@@ -3,6 +3,7 @@ package com.xing.lib;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -15,6 +16,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -57,6 +59,13 @@ public class CountDownView extends View {
      * 圆弧宽度
      */
     private float mArcWidth;
+
+    /**
+     *  圆弧padding
+     */
+    private float mArcPadding;
+
+
     /**
      * 文字FontMetrics
      */
@@ -97,6 +106,9 @@ public class CountDownView extends View {
      */
     private RectF mArcRectF;
 
+
+
+
     /**
      * 文字的大小
      */
@@ -130,10 +142,28 @@ public class CountDownView extends View {
      */
     private String mTimeUnit;
 
+    /**
+     *  不显示数字 只显示跳过
+     */
+    private boolean mJustSkip = false ;
+    /**
+     * 跳过时默认文字
+     */
+    private String mSkipWords ;
+    /**
+     * 跳过时文字大小
+     */
+    private float mSkipTextSize ;
+    /**
+     * 跳过时文字的颜色
+     */
+    private int mSkipTextColor ;
+
+
+
     private ValueAnimator mValueAnimator;
 
     private OnCountDownViewListener mCountDownListener;
-
 
     public CountDownView(Context context) {
         this(context, null);
@@ -157,12 +187,25 @@ public class CountDownView extends View {
 
         mArcColor = array.getColor(R.styleable.CountDownView_hx_arc_color, Color.RED);
         mArcWidth = array.getDimension(R.styleable.CountDownView_hx_arc_width, dp2px(2));
+        mArcPadding = array.getDimension(R.styleable.CountDownView_hx_arc_padding,dp2px(1));
+
         textIncrease = array.getInt(R.styleable.CountDownView_hx_text_change_style, 0) == 0;
         mTextSize = array.getDimension(R.styleable.CountDownView_hx_text_size, dp2px(14));
         mTextColor = array.getColor(R.styleable.CountDownView_hx_text_color, Color.RED);
         mShowMaxTime = array.getInt(R.styleable.CountDownView_hx_max_time, 5);
         mTimeUnit = array.getString(R.styleable.CountDownView_hx_time_unit);
         mStartDrawAngle = array.getInt(R.styleable.CountDownView_hx_start_angle, -90);
+        mJustSkip = array.getBoolean(R.styleable.CountDownView_hx_just_skip,false);
+        mSkipTextColor = array.getColor(R.styleable.CountDownView_hx_skip_text_color, Color.BLACK);
+        mSkipTextSize = array.getDimension(R.styleable.CountDownView_hx_skip_text_size, dp2px(14));
+        mSkipWords = array.getString(R.styleable.CountDownView_hx_skip_text);
+
+        Log.e("skipTextSize","----------->>" + mSkipTextSize);
+
+
+        if(TextUtils.isEmpty(mSkipWords)){
+            mSkipWords = "跳过";
+        }
 
         if (TextUtils.isEmpty(mTimeUnit)) {
             mTimeUnit = "s";
@@ -183,13 +226,10 @@ public class CountDownView extends View {
 
         mTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.setTextSize(mTextSize);
-        mTextPaint.setColor(mTextColor);
 
-        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
-        mTextHeight = Math.abs((fontMetrics.descent + fontMetrics.ascent) / 2);
+        initTextPaint();
+
         mText = String.valueOf(mShowMaxTime);
-
         //增大的方向
         if (textIncrease) {
             mStartAngle = 0;
@@ -203,11 +243,26 @@ public class CountDownView extends View {
         }
     }
 
+    private void initTextPaint() {
+        if(mJustSkip) {
+            mTextPaint.setTextSize(mSkipTextSize);
+            mTextPaint.setColor(mSkipTextColor);
+        }else{
+            mTextPaint.setTextSize(mTextSize);
+            mTextPaint.setColor(mTextColor);
+        }
+
+        Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
+        mTextHeight = Math.abs((fontMetrics.descent + fontMetrics.ascent) / 2);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         if (w != oldw && h != oldh) {
-            mArcRectF = new RectF(mArcWidth / 2, mArcWidth / 2, w - mArcWidth / 2, h - mArcWidth / 2);
+            mArcRectF = new RectF(mArcWidth / 2 + mArcPadding,
+                                    mArcWidth / 2 + mArcPadding,
+                                w - mArcWidth / 2 - mArcPadding, h - mArcWidth / 2 - mArcPadding);
         }
     }
 
@@ -229,14 +284,15 @@ public class CountDownView extends View {
         canvas.drawArc(mArcRectF, mStartDrawAngle, mSweepAngle, false, mArcPaint);
 
         //3.画文字
-        canvas.drawText(mText + mTimeUnit, getWidth() / 2, getHeight() / 2 + mTextHeight, mTextPaint);
+        if(mJustSkip) {
+            canvas.drawText(mSkipWords, getWidth()/2, getHeight()/2 + mTextHeight, mTextPaint);
+        }else{
+            canvas.drawText(mText + mTimeUnit, getWidth() / 2, getHeight() / 2 + mTextHeight, mTextPaint);
+        }
     }
 
     public void start() {
-        if (mValueAnimator != null && mValueAnimator.isRunning()) {
-            mValueAnimator.cancel();
-            mValueAnimator = null ;
-        }
+        resetAnimator();
 
         if (mShowMaxTime <= 0) {
             Log.e("TAG", "max time must be set");
@@ -269,6 +325,13 @@ public class CountDownView extends View {
         mValueAnimator.start();
     }
 
+    private void resetAnimator() {
+        if (mValueAnimator != null && mValueAnimator.isRunning()) {
+            mValueAnimator.cancel();
+            mValueAnimator = null ;
+        }
+    }
+
     private int calculateText() {
         if (mSweepAngle <= 0) {
             return 0;
@@ -289,8 +352,34 @@ public class CountDownView extends View {
         if (time <= 0) {
             return;
         }
-
         mShowMaxTime = time;
+    }
+
+
+    public void setJustSkip(boolean justSkip){
+        this.mJustSkip = justSkip;
+        initTextPaint();
+        invalidate();
+    }
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                finishAllTask();
+                break;
+        }
+
+        return mJustSkip || super.onTouchEvent(event);
+    }
+
+
+    private void finishAllTask() {
+        resetAnimator();
+        if(null != mCountDownListener) mCountDownListener.onFinished();
     }
 
     public void setCountDownListener(OnCountDownViewListener mCountDownListener) {
