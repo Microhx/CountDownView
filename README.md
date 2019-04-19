@@ -2,7 +2,7 @@
 一款小巧的自定义计时View
 
 使用:<br/>
-  > implementation 'com.xing.lib:CountDownView:0.0.8'
+  > implementation 'com.xing.lib:CountDownView:0.0.9'
 
 效果如下：<br/>
 <img src='https://raw.githubusercontent.com/Microhx/CountDownView/master/img/demo.gif' width="340"/>
