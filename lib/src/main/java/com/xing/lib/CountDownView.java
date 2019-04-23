@@ -18,6 +18,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
 import static android.util.TypedValue.COMPLEX_UNIT_DIP;
@@ -157,9 +158,8 @@ public class CountDownView extends View {
      */
     private int mSkipTextColor ;
 
-
     private ValueAnimator mValueAnimator;
-
+    private Interpolator mTimeInterpolator = new LinearInterpolator();
     private OnCountDownViewListener mCountDownListener;
 
     public CountDownView(Context context) {
@@ -295,7 +295,7 @@ public class CountDownView extends View {
 
         mValueAnimator = ValueAnimator.ofInt(mStartAngle, mEndAngle);
         mValueAnimator.setDuration(mShowMaxTime * 1000);
-        mValueAnimator.setInterpolator(new LinearInterpolator());
+        mValueAnimator.setInterpolator(mTimeInterpolator);
 
         mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
