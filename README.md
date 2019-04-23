@@ -27,4 +27,15 @@
 | hx_skip_text_size | ‘跳过’时 文字大小 |
 | hx_skip_text_color | ‘跳过’时  文字颜色|
 
+```
+//start
+countDownView.start()
 
+//finish Listener
+countDownView.setCountDownListener(new OnCountDownViewListener(){
+  public void onFinished(){
+      //TODO what you want...
+  }
+});
+
+```

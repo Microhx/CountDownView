@@ -80,7 +80,6 @@ public class CountDownView extends View {
      */
     private int mArcColor;
 
-
     /**
      * 圆弧开始的角度
      */
@@ -105,8 +104,6 @@ public class CountDownView extends View {
      * 圆弧对应的矩形
      */
     private RectF mArcRectF;
-
-
 
 
     /**
@@ -146,6 +143,7 @@ public class CountDownView extends View {
      *  不显示数字 只显示跳过
      */
     private boolean mJustSkip = false ;
+
     /**
      * 跳过时默认文字
      */
@@ -158,7 +156,6 @@ public class CountDownView extends View {
      * 跳过时文字的颜色
      */
     private int mSkipTextColor ;
-
 
 
     private ValueAnimator mValueAnimator;
@@ -199,9 +196,6 @@ public class CountDownView extends View {
         mSkipTextColor = array.getColor(R.styleable.CountDownView_hx_skip_text_color, Color.BLACK);
         mSkipTextSize = array.getDimension(R.styleable.CountDownView_hx_skip_text_size, dp2px(14));
         mSkipWords = array.getString(R.styleable.CountDownView_hx_skip_text);
-
-        Log.e("skipTextSize","----------->>" + mSkipTextSize);
-
 
         if(TextUtils.isEmpty(mSkipWords)){
             mSkipWords = "跳过";
@@ -278,16 +272,16 @@ public class CountDownView extends View {
         super.onDraw(canvas);
 
         //1.画背景
-        canvas.drawCircle(getWidth() / 2, getHeight() / 2, mRadius, mbgPaint);
+        canvas.drawCircle(getWidth() / 2f, getHeight() / 2f, mRadius, mbgPaint);
 
         //2.画圆弧
         canvas.drawArc(mArcRectF, mStartDrawAngle, mSweepAngle, false, mArcPaint);
 
         //3.画文字
         if(mJustSkip) {
-            canvas.drawText(mSkipWords, getWidth()/2, getHeight()/2 + mTextHeight, mTextPaint);
+            canvas.drawText(mSkipWords, getWidth()/2f, getHeight()/2f + mTextHeight, mTextPaint);
         }else{
-            canvas.drawText(mText + mTimeUnit, getWidth() / 2, getHeight() / 2 + mTextHeight, mTextPaint);
+            canvas.drawText(mText + mTimeUnit, getWidth() / 2f, getHeight() / 2f + mTextHeight, mTextPaint);
         }
     }
 
@@ -382,9 +376,20 @@ public class CountDownView extends View {
         if(null != mCountDownListener) mCountDownListener.onFinished();
     }
 
-    public void setCountDownListener(OnCountDownViewListener mCountDownListener) {
+    public CountDownView setCountDownListener(OnCountDownViewListener mCountDownListener) {
         this.mCountDownListener = mCountDownListener;
+        return this;
+
     }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        resetAnimator();
+    }
+
+
+
 
 
     public interface OnCountDownViewListener {
